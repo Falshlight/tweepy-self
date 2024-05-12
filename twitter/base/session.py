@@ -14,8 +14,8 @@ class BaseAsyncSession(requests.AsyncSession):
     DEFAULT_HEADERS = {
         "accept": "*/*",
         "accept-language": "en-US,en",
-        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "sec-ch-ua": '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "sec-ch-ua": '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
         "sec-ch-ua-platform": '"Windows"',
         "sec-ch-ua-mobile": "?0",
         "sec-fetch-dest": "empty",
@@ -23,7 +23,7 @@ class BaseAsyncSession(requests.AsyncSession):
         "sec-fetch-site": "same-origin",
         "connection": "keep-alive",
     }
-    DEFAULT_IMPERSONATE = requests.BrowserType.chrome120
+    DEFAULT_IMPERSONATE = requests.BrowserType.chrome124
 
     def __init__(
         self,
