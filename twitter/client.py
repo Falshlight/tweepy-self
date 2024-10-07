@@ -1642,16 +1642,10 @@ class Client(BaseHTTPClient):
 
         :return: guest_token
         """
-        url = "https://twitter.com"
-        response = await self._session.request("GET", url)
-        # TODO Если в сессии есть рабочий auth_token, то не вернет нужную страницу.
-        #   Поэтому нужно очищать сессию перед вызовом этого метода.
-        search_result = re.search(r"gt\s?=\s?\d+", response.text)
-
-        if not search_result:
-            return None
-
-        guest_token = search_result[0].split("=")[1]
+        url = 'https://api.twitter.com/1.1/guest/activate.json'
+        response = await self._session.request("POST", url, data=b'')
+        j = response.json()
+        guest_token = j.get('guest_token', None)
         return guest_token
 
     async def _login(self) -> bool:
