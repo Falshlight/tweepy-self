@@ -1,6 +1,5 @@
 import json
 import shutil
-import tomllib
 from pathlib import Path
 from typing import Iterable
 
@@ -10,11 +9,6 @@ def copy_file(source_path: Path | str, destination_path: Path | str):
     if destination_path.exists():
         return
     shutil.copy2(str(source_path), str(destination_path))
-
-
-def load_toml(filepath: Path | str) -> dict:
-    with open(filepath, "rb") as file:
-        return tomllib.load(file)
 
 
 def load_lines(filepath: Path | str) -> list[str]:
