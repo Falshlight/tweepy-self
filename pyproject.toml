@@ -11,7 +11,7 @@ packages = [{include = "twitter"}]
 Source = "https://github.com/alenkimov/tweepy-self"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 curl_cffi = "0.7.0b4"
 better-proxy = "^1.1"
 beautifulsoup4 = "^4"
