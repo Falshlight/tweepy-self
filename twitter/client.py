@@ -85,6 +85,7 @@ class Client(BaseHTTPClient):
         max_unlock_attempts: int = 5,
         auto_relogin: bool = True,
         update_account_info_on_startup: bool = True,
+        imap_handler=None,
         **session_kwargs,
     ):
         super().__init__(**session_kwargs)
@@ -94,6 +95,7 @@ class Client(BaseHTTPClient):
         self.max_unlock_attempts = max_unlock_attempts
         self.auto_relogin = auto_relogin
         self._update_account_info_on_startup = update_account_info_on_startup
+        self.imap_handler = imap_handler
 
     async def __aenter__(self):
         await self.on_startup()
@@ -1680,16 +1682,20 @@ class Client(BaseHTTPClient):
                         f"Failed to login. Task id: LoginAcid." f" No email!"
                     )
 
+                email_code = None
                 if subtask.primary_text == "Check your email":
-                    raise TwitterException(
-                        f"Failed to login. Task id: LoginAcid."
-                        f" Email verification required!"
-                        f" No IMAP handler for this version of library :<"
-                    )
+                    if self.imap_handler:
+                        email_code = self.imap_handler(self.account.email)
+                    else:
+                        raise TwitterException(
+                            f"Failed to login. Task id: LoginAcid."
+                            f" Email verification required!"
+                            f" No IMAP handler provided"
+                        )
 
                 try:
                     # fmt: off
-                    flow_token, subtasks = await self._login_acid(flow_token, self.account.email)
+                    flow_token, subtasks = await self._login_acid(flow_token, email_code or self.account.email)
                     # fmt: on
                 except HTTPException as exc:
                     if 399 in exc.api_codes:
